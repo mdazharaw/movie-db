@@ -1,0 +1,32 @@
+{
+  "name": "movie-db",
+  "version": "1.0.0",
+  "description": "GA Unit 2 Project",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-react-views": "^0.11.0",
+    "method-override": "^3.0.0",
+    "movie-trailer": "^2.0.6",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "sha256": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdazharaw/movie-db.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mdazharaw/movie-db/issues"
+  },
+  "homepage": "https://github.com/mdazharaw/movie-db#readme"
+}
