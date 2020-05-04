@@ -21,6 +21,8 @@ module.exports = (dbPoolInstance) => {
         if (error) {
           var errorMsg = 'Could not create user, please try again';
           // invoke callback function with results after query has executed
+          console.log(error)
+
           callback(error, errorMsg);
 
         } else {
@@ -49,7 +51,7 @@ module.exports = (dbPoolInstance) => {
     dbPoolInstance.query(query, values, (error, queryResult) => {
       if (error) {
         var errorMsg = 'Could not login with these credentials, please try again';
-        console.log("error 1")
+        console.log(error)
 
         // invoke callback function with results after query has executed
         callback(error, errorMsg);
@@ -70,7 +72,6 @@ module.exports = (dbPoolInstance) => {
           var errorMsg = 'Could not login with these credentials, please try again';
 
           // invoke callback function with results after query has executed
-          console.log("error 2")
 
           callback(null, errorMsg);
 
