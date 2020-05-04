@@ -27,7 +27,8 @@ class Main extends React.Component {
 
 
     var movie = this.props
-    let trailer;
+    let trailer = "https://www.youtube.com/embed/"+movie.trailer+"?autoplay=1&origin=http://example.com";
+    console.log(trailer);
     // movieTrailer( movie.title, movie.release_date.substring(0,3))
     // .then (response => {
     //   trailer = response;
@@ -46,7 +47,13 @@ class Main extends React.Component {
     var movieOutput = <li className="row pb-5">
 
       <div className="col-5">
-        <img className="w-75 text-center" src={movie.poster_path} alt="" />
+        <img className="w-75 text-center mb-3 pt-2" src={movie.poster_path} alt="" />
+        {/* <img className="w-50 text-center mt-5" src={movie.backdrop_path} alt="" /> */}
+        <br/>
+        <a className={`mt-5 mr-3 btn btn-secondary ${showLogout}`} href="#" >Add to watchlist</a>
+        <a className={`mt-5 ml-3 btn btn-secondary ${showLogout}`} href="#" >Add to community list</a>
+
+
       </div>
       <div className="col-7">
         <a href={`${movie.homepage}`}><h1 className="text-light">{movie.title}</h1>
@@ -55,10 +62,10 @@ class Main extends React.Component {
         <p className="text-light">{runtime}</p>
         <br />
         <p className="text-light">{movie.overview}</p>
-        {/* <a href={`${movie.trailer}`}>{movie.trailer}</a>
-          <div class="embed-responsive embed-responsive-16by9">
-  <iframe  src="https://www.youtube.com/embed/v=dQw4w9WgXcQ" allowfullscreen></iframe>
-</div> */}
+        {/* <a className="mt-5 btn btn-light" href={movie.trailer} target=" ">Watch the trailer</a> */}
+        <iframe id="ytplayer" type="text/html" width="640" height="360"
+        src={`${trailer}`}
+        frameBorder="0"></iframe>
 
       </div>
 
@@ -78,11 +85,21 @@ class Main extends React.Component {
                 </img>
                 &emsp;<span style={logoStyle}>Watcher</span>
               </a>
+
+              <a className={`nav-item text-light ${showLogout}`} href="/watchlist">
+                <span style={logoStyle}>My Watchlist</span>
+              </a>
+              <a className="nav-item text-light" href="/community">
+                <span style={logoStyle}>Community Lists</span>
+              </a>
+
+
               <div className={showLogin}>
                 <a className="btn btn-outline-primary rounded-pill mr-3 pl-4 pr-4 pt-1 pb-1" href="/login">Log In</a>
                 <a className="btn btn-primary rounded-pill pl-4 pr-4 pt-1 pb-1" href="/signup">Sign Up</a>
               </div>
               <div className={showLogout}>
+                <div className="text-light font-weight-bold pb-3">Logged in: {this.props.username}</div>
                 <a className="btn btn-outline-primary rounded-pill  pl-4 pr-4 pt-1 pb-1" href="/logout">Log Out</a>
               </div>
 
@@ -91,18 +108,26 @@ class Main extends React.Component {
           <div className="container-fluid bg-dark w-75 h-100 border border-secondary mt-3 mb-5 rounded-lg">
             {movieOutput}
 
-            <form className='d-inline' method="POST" action="/post">
+            <form className={showLogout} method="POST" action="/review/post">
+              <div className="form-group">
+                <label className = "text-light"htmlFor="exampleFormControlSelect1">Rating</label>
+                <select className="form-control w-25" id="exampleFormControlSelect1">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
               <div className="form-group text-left">
-                <label htmlFor="tweet" className="text-light pt-3">Review:</label>
-                <textarea className="form-control" rows="4" name="message" placeholder="Start typing...">
+                <label htmlFor="tweet" className="text-light">Review:</label>
+                <textarea className="form-control" rows="4" name="message" placeholder="Enter review...">
                 </textarea>
-
-                <br />
                 <input className="btn btn-primary mt-3" type="submit" value="Submit" />
               </div>
             </form>
           </div>
-          <div className="container bg-dark w-100 border border-top border-bottom border-secondary mt-3 rounded-lg">
+          <div className="container bg-dark border border-top border-bottom border-secondary mt-3 rounded-lg">
             <div className="row bg-light  border-top border-bottom border-secondary pt-4 pb-4 pl-3">No reviews to display</div>
           </div>
           <footer className="page-footer font-small blue">

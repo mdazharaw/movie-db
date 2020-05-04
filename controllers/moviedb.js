@@ -9,17 +9,19 @@ module.exports = (db) => {
    * ===========================================
    */
   const api_key = process.env.TMDB_API_KEY;
-  let loadIndex = (req, res) => {
+  let loadIndex = async (req, res) => {
     var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
+
     var nowPlayingUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${api_key}&language=en-US&page=1&region=US`;
     const imgUrl = "https://image.tmdb.org/t/p/w500"
-    async function fetchData() {
-      let response = await axios.get(nowPlayingUrl);
+    let response = await axios.get(nowPlayingUrl);
 
       // handle success
-      let nowPlaying = await response.data;
+      let dataOut = await response.data;
       let results = await response.data.results;
-      // console.log(nowPlaying)
+      // console.log(dataOut)
       results.forEach(element => {
         var posterPath = element.poster_path
         element.poster_path = imgUrl + posterPath;
@@ -31,40 +33,50 @@ module.exports = (db) => {
         //  element.trailer = await trailer;
       })
       // always executed
-      nowPlaying.results = await results;
-      nowPlaying.loggedIn = loggedIn;
+      dataOut.results = await results;
+      dataOut.loggedIn = loggedIn;
+      dataOut.username = username;
+      dataOut.userid = userid;
+
       // console.log(results);
-      res.render('./moviedb/index', nowPlaying)
-    }
-    fetchData();
+      res.render('./moviedb/index', dataOut)
+    
   }
 
-  let getMovie = (req, res) => {
+  let getMovie = async (req, res) => {
     var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
     let movie_id = req.params.id;
     var singleMovieUrl = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${api_key}&language=en-US`;
     const imgUrl = "https://image.tmdb.org/t/p/w500"
-    async function fetchData() {
-      let response = await axios.get(singleMovieUrl);
-
-      // handle success
-      let singleMovie = await response.data;
-      // console.log(singleMovie)
+    let singleMovie;
+      try{
+        let response = await axios.get(singleMovieUrl);
+        singleMovie = await response.data;
+        // console.log(singleMovie)
       var posterPath = singleMovie.poster_path
       singleMovie.poster_path = imgUrl + posterPath;
       var backdrop_path = singleMovie.backdrop_path
       singleMovie.backdrop_path = imgUrl + backdrop_path;
-      //   let response = await movieTrailer( singleMovie.title, singleMovie.release_date.substring(0,3))
-      //   trailer = await response;
+      let trailer = await movieTrailer( singleMovie.title, singleMovie.release_date.substring(0,3))
       // //  console.log(trailer);
-      //  singleMovie.trailer = await trailer;
+      
+      // console.log(trailer)
+      trailer = trailer.split('https://www.youtube.com/watch?v=');
+      // console.log(trailer[1])
 
-      // always executed
-      // console.log(singleMovie);
       singleMovie.loggedIn = loggedIn;
-      res.render('./moviedb/movie', singleMovie)
-    }
-    fetchData();
+      singleMovie.username = username;
+      singleMovie.userid = userid;
+      singleMovie.trailer = trailer[1];
+      }
+      catch(error){
+
+      }
+      // console.log(singleMovie);
+      
+      res.render('./moviedb/movie', singleMovie)    
   }
 
   let login = (request, response) => {
@@ -81,15 +93,15 @@ module.exports = (db) => {
     var dataIn = request.body;
     if (dataIn.username == "" || dataIn.password == "" || dataIn.confirm == "") {
       var error = {
-        error: 'Could not create user, please try again.'
+        error: 'Please enter the input fields correctly.'
       }
       response.render('moviedb/signup', error);
     }
     else {
       db.moviedb.signup(dataIn, (error, result) => {
-        if (result == 'Could not create user, please try again') {
+        if (typeof(result) === 'string') {
           var error = {
-            error: 'Could not create user, please try again.'
+            error: result
           }
           response.render('moviedb/signup', error);
         } else {
@@ -109,15 +121,15 @@ module.exports = (db) => {
     var dataIn = request.body;
     if (dataIn.username == "" || dataIn.password == "" || dataIn.confirm == "") {
       var error = {
-        error: 'Could not login with these credentials, please try again.'
+        error: 'Please enter the input fields correctly.'
       }
       response.render('moviedb/login', error);
     }
     else {
       db.moviedb.login(dataIn, (error, result) => {
-        if (result == "Could not login with these credentials, please try again") {
+        if (typeof(result) === 'string') {
           var error = {
-            error: 'Could not login with these credentials, please try again.'
+            error: result
           }
           response.render('moviedb/login', error);
         }

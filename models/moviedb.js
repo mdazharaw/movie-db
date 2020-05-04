@@ -19,7 +19,7 @@ module.exports = (dbPoolInstance) => {
       const values = [username, password];
       dbPoolInstance.query(query, values, (error, queryResult) => {
         if (error) {
-          var errorMsg = 'Could not create user, please try again';
+          var errorMsg = 'Username taken, please try again.';
           // invoke callback function with results after query has executed
           console.log(error)
 
@@ -40,6 +40,12 @@ module.exports = (dbPoolInstance) => {
         }
       });
     }
+    else{
+        var errorMsg = 'Passwords do not match';
+        // invoke callback function with results after query has executed
+
+        callback(null, errorMsg);
+    }
   };
 
   let login = (dataIn, callback) => {
@@ -50,7 +56,7 @@ module.exports = (dbPoolInstance) => {
     const values = [username];
     dbPoolInstance.query(query, values, (error, queryResult) => {
       if (error) {
-        var errorMsg = 'Could not login with these credentials, please try again';
+        var errorMsg = 'Invalid username, please try again.';
         console.log(error)
 
         // invoke callback function with results after query has executed
@@ -67,12 +73,13 @@ module.exports = (dbPoolInstance) => {
             callback(null, result);
           }
           else{
-            callback(null, "Could not login with these credentials, please try again");
+            callback(null, "Invalid password, please try again");
           }
           // console.log(queryResult.rows);
 
         } else {
-          var errorMsg = 'Could not login with these credentials, please try again';
+          var errorMsg = 'Invalid username, please try again.';
+
 
           // invoke callback function with results after query has executed
 

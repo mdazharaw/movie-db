@@ -32,6 +32,7 @@ class Login extends React.Component {
                 </img>
                 &emsp;<span style={logoStyle}>Watcher</span>
               </a>
+             
               <div className={loggedIn}>
                 <a className="btn btn-outline-primary rounded-pill mr-3 pl-2 pr-2 pt-1 pb-1" href="/login">Log In</a>
                 <a className="btn btn-primary rounded-pill pl-4 pr-4 pt-1 pb-1" href="/signup">Sign Up</a>

@@ -53,8 +53,7 @@ class Home extends React.Component {
           <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet" />
           <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
-        {/* <body className="bg-dark"> */}
-        <body className="blue">
+        <body className="bg-dark">
           <div className="bg-dark border-bottom border-secondary">
             <nav className="navbar navbar-dark bg-dark w-75 ml-auto mr-auto pl-0 pr-0">
               <a className="navbar-brand" href="/">
@@ -62,22 +61,33 @@ class Home extends React.Component {
                 </img>
                 &emsp;<span style={logoStyle}>Watcher</span>
               </a>
+              <a className={`nav-item text-light ${showLogout}`} href="/watchlist">
+                <span style={logoStyle}>My Watchlist</span>
+              </a>
+              <a className="nav-item text-light" href="/community">
+                <span style={logoStyle}>Community Lists</span>
+              </a>
               <div className={showLogin}>
                 <a className="btn btn-outline-primary rounded-pill mr-3 pl-4 pr-4 pt-1 pb-1" href="/login">Log In</a>
                 <a className="btn btn-primary rounded-pill pl-4 pr-4 pt-1 pb-1" href="/signup">Sign Up</a>
               </div>
-              <div className={showLogout}>
+    
+              <div className={`${showLogout}`}>
+              <div className = "text-light font-weight-bold pb-3">Logged in: {this.props.username}</div>
                 <a className="btn btn-outline-primary rounded-pill  pl-4 pr-4 pt-1 pb-1" href="/logout">Log Out</a>
               </div>
 
             </nav>
           </div>
           <div className="container bg-dark w-75 border border-secondary pt-3 pb-3 mt-3 mb-3 rounded-lg">
+          <form>
+          <input type="text" className="form-control  ml-auto mr-auto mb-5" id="exampleFormControlInput1" placeholder="Search for movies and shows..."/>
+          </form>
             <h3 className="text-light font-weight-light font-italic" style={logoStyle}>Latest Movies</h3>
             <br />
             {nowShowing}
           </div>
-          <footer className="page-footer font-small blue">
+          <footer className="page-footer font-small">
 
             <div class="footer-copyright text-center text-light py-3">Powered by :  <img src="/tmdb.svg" height="15" className="d-inline-block align-center" alt="">
             </img>
