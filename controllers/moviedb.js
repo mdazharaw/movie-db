@@ -51,6 +51,11 @@ module.exports = (db) => {
     var singleMovieUrl = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${api_key}&language=en-US`;
     const imgUrl = "https://image.tmdb.org/t/p/w500"
     let singleMovie;
+    var reviews;
+    dataIn = {"movieid": movie_id}
+    db.moviedb.getReviews(dataIn,(error, result) => {
+      reviews = result;
+    });
       try{
         let response = await axios.get(singleMovieUrl);
         singleMovie = await response.data;
@@ -70,11 +75,12 @@ module.exports = (db) => {
       singleMovie.username = username;
       singleMovie.userid = userid;
       singleMovie.trailer = trailer[1];
+      singleMovie.reviews = reviews;
       }
       catch(error){
 
       }
-      // console.log(singleMovie);
+      console.log(singleMovie);
       
       res.render('./moviedb/movie', singleMovie)    
   }
@@ -158,6 +164,24 @@ module.exports = (db) => {
 
   };
 
+  let postReview = async (request, response) => {
+    // console.log(request.body)
+    // var userid = request.cookies['userid'];
+    // console.log(userid);
+
+    var dataIn = request.body;
+    // dataIn.userid = userid;
+    // console.log(dataIn);
+
+    db.moviedb.postReview(dataIn, (error, result) => {
+
+      response.redirect(`/movies/${dataIn.movieid}`);
+    });
+
+
+  };
+  
+ 
   /**
    * ===========================================
    * Export controller functions as a module
@@ -170,7 +194,8 @@ module.exports = (db) => {
     signup: signup,
     signupPost: signupPost,
     loginPost: loginPost,
-    logout: logout
+    logout: logout,
+    postReview: postReview,
   };
 
 }

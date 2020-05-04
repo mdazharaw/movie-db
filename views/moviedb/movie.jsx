@@ -2,7 +2,7 @@ var React = require("react");
 const sha256 = require('js-sha256');
 const movieTrailer = require('movie-trailer')
 
-class Main extends React.Component {
+class Movie extends React.Component {
   render() {
     var showLogin = 'd-inline';
     var showLogout = 'd-none';
@@ -27,8 +27,8 @@ class Main extends React.Component {
 
 
     var movie = this.props
-    let trailer = "https://www.youtube.com/embed/"+movie.trailer+"?autoplay=1&origin=http://example.com";
-    console.log(trailer);
+    let trailer = "https://www.youtube.com/embed/" + movie.trailer + "?autoplay=1&origin=http://example.com";
+    // console.log(trailer);
     // movieTrailer( movie.title, movie.release_date.substring(0,3))
     // .then (response => {
     //   trailer = response;
@@ -49,7 +49,7 @@ class Main extends React.Component {
       <div className="col-5">
         <img className="w-75 text-center mb-3 pt-2" src={movie.poster_path} alt="" />
         {/* <img className="w-50 text-center mt-5" src={movie.backdrop_path} alt="" /> */}
-        <br/>
+        <br />
         <a className={`mt-5 mr-3 btn btn-secondary ${showLogout}`} href="#" >Add to watchlist</a>
         <a className={`mt-5 ml-3 btn btn-secondary ${showLogout}`} href="#" >Add to community list</a>
 
@@ -64,12 +64,31 @@ class Main extends React.Component {
         <p className="text-light">{movie.overview}</p>
         {/* <a className="mt-5 btn btn-light" href={movie.trailer} target=" ">Watch the trailer</a> */}
         <iframe id="ytplayer" type="text/html" width="640" height="360"
-        src={`${trailer}`}
-        frameBorder="0"></iframe>
-
+          src={`${trailer}`}
+          frameBorder="0"></iframe>
       </div>
-
     </li>;
+
+    var reviews = this.props.reviews;
+    if (reviews == null) {
+      reviews = <div className="row bg-light  border-top border-bottom border-secondary pt-4 pb-4 pl-3">No reviews to display</div>
+    }
+    else {
+      reviews = reviews.map(element => {
+        return <div className="row bg-light  border-top border-bottom border-secondary pt-4 pb-4">
+          {/* <div className="col-2">
+          <img src="https://sociology.columbia.edu/themes/custom/columbia/assets/img/people-default.svg" className="w-100 bg-dark rounded-circle" alt="" />
+        </div> */}
+          <div className="col-8">
+            <strong>Username: {element.username}</strong>
+            <br />Rating: {element.rating}/5
+            <br />Review: {element.review}
+            <br />
+          </div>
+        </div>
+      })
+    }
+
     return (
       <html>
         <head>
@@ -110,8 +129,8 @@ class Main extends React.Component {
 
             <form className={showLogout} method="POST" action="/review/post">
               <div className="form-group">
-                <label className = "text-light"htmlFor="exampleFormControlSelect1">Rating</label>
-                <select className="form-control w-25" id="exampleFormControlSelect1">
+                <label className="text-light" htmlFor="exampleFormControlSelect1">Rating</label>
+                <select className="form-control w-25" id="exampleFormControlSelect1" name="rating">
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
@@ -120,15 +139,20 @@ class Main extends React.Component {
                 </select>
               </div>
               <div className="form-group text-left">
-                <label htmlFor="tweet" className="text-light">Review:</label>
-                <textarea className="form-control" rows="4" name="message" placeholder="Enter review...">
+                <label htmlFor="review" className="text-light">Review:</label>
+                <textarea className="form-control" rows="4" name="review" placeholder="Enter review...">
                 </textarea>
+                <input type="hidden" name="userid" defaultValue={this.props.userid}
+                />
+                <input type="hidden" name="movieid" defaultValue={this.props.id}
+                />
                 <input className="btn btn-primary mt-3" type="submit" value="Submit" />
               </div>
             </form>
           </div>
           <div className="container bg-dark border border-top border-bottom border-secondary mt-3 rounded-lg">
-            <div className="row bg-light  border-top border-bottom border-secondary pt-4 pb-4 pl-3">No reviews to display</div>
+            <h4 className = "text-light">Reviews: </h4>
+            {reviews}
           </div>
           <footer className="page-footer font-small blue">
 
@@ -148,4 +172,4 @@ class Main extends React.Component {
   }
 }
 
-module.exports = Main;
+module.exports = Movie;

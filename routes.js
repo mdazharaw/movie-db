@@ -22,6 +22,7 @@ module.exports = (app, allModels) => {
   app.post('/signup', movieDbCallbacks.signupPost);
   app.post('/login', movieDbCallbacks.loginPost);
   app.get('/logout', movieDbCallbacks.logout);
+  app.post('/review/post', movieDbCallbacks.postReview);
 
 
 

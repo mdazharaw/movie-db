@@ -91,9 +91,72 @@ module.exports = (dbPoolInstance) => {
 
 
   };
+
+  let postReview = (dataIn, callback) => {
+    var userid = dataIn.userid;
+    var rating = dataIn.rating;
+    var review = dataIn.review;
+    var movieid = dataIn.movieid;
+    // console.log(Array.isArray(tags));
+    
+      let query = 'INSERT INTO reviewdb (userid, rating, review, movieid) VALUES ($1,$2, $3, $4) RETURNING reviewid';
+      const values = [userid,rating,review,movieid];
+      dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error) {
+
+          // invoke callback function with results after query has executed
+          callback(error, null);
+
+        } else {
+
+          // invoke callback function with results after query has executed
+          if (queryResult.rows.length > 0) {
+              callback(null, queryResult.rows);
+            
+            // console.log(queryResult.rows);
+
+          } else {
+            callback(null, null);
+
+          }
+        }
+      });    
+  };
+  let getReviews= (dataIn, callback) => {
+    var movieid = dataIn.movieid
+    let query
+      = `SELECT * FROM userdb
+      INNER JOIN reviewdb ON (userdb.userid = reviewdb.userid)   
+      WHERE reviewdb.movieid = ${movieid}
+      ORDER BY reviewdb.reviewid DESC
+      `;
+    dbPoolInstance.query(query, (error, queryResult) => {
+      if (error) {
+
+        // invoke callback function with results after query has executed
+        callback(error, null);
+
+      } else {
+
+        // invoke callback function with results after query has executed
+        if (queryResult.rows.length > 0) {
+          // console.log(queryResult.rows);
+          callback(null, queryResult.rows);
+
+          // console.log(queryResult.rows);
+
+        } else {
+          callback(null, null);
+
+        }
+      }
+    });
+  }
   
   return {
     signup,
-    login
+    login,
+    postReview,
+    getReviews
   };
 };
