@@ -41,10 +41,10 @@ module.exports = (dbPoolInstance) => {
   };
 
   let login = (dataIn, callback) => {
+    console.log("logging in")
     var username = dataIn.username;
     var password = dataIn.password;
     password = sha256(password);
-
     let query = 'SELECT * FROM userdb WHERE username = $1';
     const values = [username];
     dbPoolInstance.query(query, values, (error, queryResult) => {
