@@ -50,8 +50,8 @@ class Movie extends React.Component {
         <img className="w-75 text-center mb-3 pt-2" src={movie.poster_path} alt="" />
         {/* <img className="w-50 text-center mt-5" src={movie.backdrop_path} alt="" /> */}
         <br />
-        <a className={`mt-5 mr-3 btn btn-secondary ${showLogout}`} href="#" >Add to watchlist</a>
-        <a className={`mt-5 ml-3 btn btn-secondary ${showLogout}`} href="#" >Add to community list</a>
+        <a className={`mt-5 mr-3 btn btn-secondary ${showLogout}`} href={`/watchlist/${movie.id}`} >Add to watchlist</a>
+        <a className={`mt-5 ml-3 btn btn-secondary ${showLogout}`} href={`/community/${movie.id}`}  >Add to community list</a>
 
 
       </div>
@@ -92,6 +92,7 @@ class Movie extends React.Component {
     return (
       <html>
         <head>
+    <title>Watcher: {movie.title}</title>
 
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"></link>
           <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet" />

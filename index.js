@@ -2,6 +2,8 @@ const express = require('express');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const axios = require('axios');
+var favicon = require('serve-favicon');
+
 require('dotenv').config();
 
 /**
@@ -26,7 +28,8 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-app.use(express.static('public'))
+
+app.use('/favicon.ico', express.static('public/favicon.ico'));
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();

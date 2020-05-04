@@ -82,7 +82,7 @@ module.exports = (db) => {
       }
       console.log(singleMovie);
       
-      res.render('./moviedb/movie', singleMovie)    
+      res.render('moviedb/movie', singleMovie)    
   }
 
   let login = (request, response) => {
@@ -177,10 +177,60 @@ module.exports = (db) => {
 
       response.redirect(`/movies/${dataIn.movieid}`);
     });
-
-
   };
   
+  let loadWatchlist = async (req, res) => {
+    var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
+
+   if (loggedIn==""){
+     res.redirect('/');
+   } else{
+    res.render('./moviedb/watchlist', {loggedIn: loggedIn,username: username,userid:userid})
+
+   }
+    
+  }
+  let searchDb = async (req, res) => {
+    var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
+    var query = req.body.searchTerm;
+    var searchUrl = `https://api.themoviedb.org/3/search/multi?api_key=${api_key}&language=en-US&query=${query}&page=1&include_adult=false&region=US`;
+    const imgUrl = "https://image.tmdb.org/t/p/w500"
+    let response = await axios.get(searchUrl);
+
+      // handle success
+      let dataOut = await response.data;
+      let results = await response.data.results;
+      // console.log(dataOut)
+      results.forEach(element => {
+        var posterPath = element.poster_path
+        element.poster_path = imgUrl + posterPath;
+        var backdrop_path = element.backdrop_path
+        element.backdrop_path = imgUrl + backdrop_path;
+        //   let response = await movieTrailer( element.title, element.release_date.substring(0,3))
+        //   trailer = await response;
+        // //  console.log(trailer);
+        //  element.trailer = await trailer;
+      })
+      // always executed
+      dataOut.results = await results;
+      dataOut.loggedIn = loggedIn;
+      dataOut.username = username;
+      dataOut.userid = userid;
+      dataOut.query = query;
+      console.log(dataOut)
+
+      // console.log(results);
+      res.render('./moviedb/search', dataOut)
+    
+  }
+
+  
+
+
  
   /**
    * ===========================================
@@ -196,6 +246,6 @@ module.exports = (db) => {
     loginPost: loginPost,
     logout: logout,
     postReview: postReview,
-  };
-
+    loadWatchlist: loadWatchlist,
+    searchDb: searchDb};
 }

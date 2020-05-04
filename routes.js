@@ -23,6 +23,8 @@ module.exports = (app, allModels) => {
   app.post('/login', movieDbCallbacks.loginPost);
   app.get('/logout', movieDbCallbacks.logout);
   app.post('/review/post', movieDbCallbacks.postReview);
+  app.get('/watchlist', movieDbCallbacks.loadWatchlist);
+  app.post('/search', movieDbCallbacks.searchDb);
 
 
 
