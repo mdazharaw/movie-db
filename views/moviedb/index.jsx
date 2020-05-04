@@ -49,11 +49,12 @@ class Home extends React.Component {
       <html>
         <head>
 
-          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossOrigin="anonymous"></link>
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
           <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet" />
-
+          <link rel="stylesheet" type="text/css" href="/style.css"/>
         </head>
-        <body className="bg-dark">
+        {/* <body className="bg-dark"> */}
+        <body className="blue">
           <div className="bg-dark border-bottom border-secondary">
             <nav className="navbar navbar-dark bg-dark w-75 ml-auto mr-auto pl-0 pr-0">
               <a className="navbar-brand" href="/">
