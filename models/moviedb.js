@@ -66,6 +66,9 @@ module.exports = (dbPoolInstance) => {
           if (checkPass == password) {
             callback(null, result);
           }
+          else{
+            callback(null, "Could not login with these credentials, please try again");
+          }
           // console.log(queryResult.rows);
 
         } else {
