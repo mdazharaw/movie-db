@@ -17,8 +17,11 @@ module.exports = (app, allModels) => {
 
   app.get('/', movieDbCallbacks.loadIndex);
   app.get('/movies/:id', movieDbCallbacks.getMovie);
-
-
+  app.get('/login', movieDbCallbacks.login);
+  app.get('/signup', movieDbCallbacks.signup);
+  app.post('/signup', movieDbCallbacks.signupPost);
+  app.post('/login', movieDbCallbacks.loginPost);
+  app.get('/logout', movieDbCallbacks.logout);
 
 
 

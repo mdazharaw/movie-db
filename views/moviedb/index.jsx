@@ -31,7 +31,8 @@ class Home extends React.Component {
     var showLogin = 'd-inline';
     var showLogout = 'd-none';
     // console.log(this.props.types);
-    var loginCheck = this.props.loggedin;
+    
+    var loginCheck = this.props.loggedIn;
 
 
     if (loginCheck == sha256('true')) {

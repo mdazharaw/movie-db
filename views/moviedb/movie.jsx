@@ -28,11 +28,11 @@ class Main extends React.Component {
 
     var movie = this.props
     let trailer;
-    movieTrailer( movie.title, movie.release_date.substring(0,3))
-    .then (response => {
-      trailer = response;
-      console.log(trailer)
-    });
+    // movieTrailer( movie.title, movie.release_date.substring(0,3))
+    // .then (response => {
+    //   trailer = response;
+    //   console.log(trailer)
+    // });
     let runtime;
     if (movie.runtime == 0){
       runtime = "Runtime:  Unavailable"
@@ -55,10 +55,10 @@ class Main extends React.Component {
           <p className="text-light">{runtime}</p>
           <br/>   
           <p className="text-light">{movie.overview}</p>
-          {/* <a href={`${movie.trailer}`}>{movie.trailer}</a> */}
+          {/* <a href={`${movie.trailer}`}>{movie.trailer}</a>
           <div class="embed-responsive embed-responsive-16by9">
   <iframe  src="https://www.youtube.com/embed/v=dQw4w9WgXcQ" allowfullscreen></iframe>
-</div>
+</div> */}
 
         </div>
 
@@ -91,7 +91,7 @@ class Main extends React.Component {
           <div className="container-fluid bg-dark w-75 h-100 border border-secondary mt-3 mb-5 rounded-lg">
           {movieOutput}
 
-            <form className='d-none' method="POST" action="/post">
+            <form className='d-inline' method="POST" action="/post">
               <div className="form-group text-left">
                 <label htmlFor="tweet" className="text-light pt-3">Review:</label>
                 <textarea className="form-control" rows="4" name="message" placeholder="Start typing...">
