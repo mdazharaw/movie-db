@@ -41,7 +41,6 @@ module.exports = (dbPoolInstance) => {
   };
 
   let login = (dataIn, callback) => {
-    console.log("logging in")
     var username = dataIn.username;
     var password = dataIn.password;
     password = sha256(password);
@@ -50,6 +49,7 @@ module.exports = (dbPoolInstance) => {
     dbPoolInstance.query(query, values, (error, queryResult) => {
       if (error) {
         var errorMsg = 'Could not login with these credentials, please try again';
+        console.log("error 1")
 
         // invoke callback function with results after query has executed
         callback(error, errorMsg);
@@ -58,6 +58,7 @@ module.exports = (dbPoolInstance) => {
 
         // invoke callback function with results after query has executed
         if (queryResult.rows.length > 0) {
+          console.log("logging in")
           var result = queryResult.rows[0];
           var checkPass = result.password;
           if (checkPass == password) {
@@ -69,6 +70,8 @@ module.exports = (dbPoolInstance) => {
           var errorMsg = 'Could not login with these credentials, please try again';
 
           // invoke callback function with results after query has executed
+          console.log("error 2")
+
           callback(null, errorMsg);
 
         }
