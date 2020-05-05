@@ -12,10 +12,8 @@ class Search extends React.Component {
     searchResults = searchResults.map((element) => {
       // console.log(element.title)
       // console.log(element.poster_path)
-      if (element.media_type == 'tv'){
-        return ""
-      }else if (element.media_type == 'movie'){
-      return <li className="row pb-5">
+      if (element.media_type == 'movie'){
+      return <li className="row pt-3 pb-3 border-secondary border-bottom">
         <div className="col-5">
           <img className="w-75 text-center" src={element.poster_path} alt="" />
         </div>
@@ -28,6 +26,9 @@ class Search extends React.Component {
         </div>
 
       </li>}
+      else{
+        return ""
+      }
     })
     var showLogin = 'd-inline';
     var showLogout = 'd-none';

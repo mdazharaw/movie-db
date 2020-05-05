@@ -8,29 +8,34 @@ class Watchlist extends React.Component {
     var logoStyle = {
       fontFamily: 'Krona One, sans-serif'
     }
-    // var nowShowing = this.props.results;
-    // nowShowing = nowShowing.map((element) => {
-    //   // console.log(element.title)
-    //   // console.log(element.poster_path)
+    var watchlist = this.props.result;
+    if (watchlist == null ||watchlist ==undefined){
+      watchlist = <li className="row pt-3 pb-3 border-secondary border-bottom">
+      <h4 className="text-light pl-3">There are no movies in your watchlist.</h4>
+    </li>
+    }else{
+    watchlist = watchlist.map((element) => {
+      // console.log(element.title)
+      // console.log(element.poster_path)
 
-    //   return <li className="row pb-5">
+      return <li className="row pt-3 pb-3 border-secondary border-bottom">
 
-    //     <div className="col-5">
-    //       <img className="w-75 text-center" src={element.poster_path} alt="" />
-    //     </div>
-    //     <div className="col-8">
-    //       <a href={`/movies/${element.id}`}><h2 className="text-light">{element.title}</h2>
-    //       </a>
-    //       <p className="text-light">{element.overview}</p>
-    //       <a href={`${element.trailer}`}>{element.trailer}</a>
-    //       {/* <img className="w-25" src={element.backdrop_path} alt="" /> */}
-    //     </div>
+        <div className="col-5">
+          <img className="w-75 text-center" src={element.poster} alt="" />
+        </div>
+        <div className="col-8">
+          <a href={`/movies/${element.movieid}`}><h2 className="text-light">{element.title}</h2>
+          </a>
+          <p className="text-light">{element.plot}</p>
+          <a className={`mt-3 btn btn-danger`} href={`/watchlist/remove/${element.movieid}`} >Remove from watchlist</a>
+        </div>
 
-    //   </li>
-    // })
+      </li>
+    })
+  }
     var showLogin = 'd-inline';
     var showLogout = 'd-none';
-    // console.log(this.props.types);
+    // console.log(this.props.result);
 
     var loginCheck = this.props.loggedIn;
 
@@ -85,7 +90,7 @@ class Watchlist extends React.Component {
           </form >
             <h3 className="text-light font-weight-light font-italic" style={logoStyle}>My Watchlist</h3>
             <br />
-            {/* {nowShowing} */}
+            {watchlist}
           </div>
           <footer className="page-footer font-small">
 

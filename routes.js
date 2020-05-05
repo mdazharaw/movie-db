@@ -25,6 +25,9 @@ module.exports = (app, allModels) => {
   app.post('/review/post', movieDbCallbacks.postReview);
   app.get('/watchlist', movieDbCallbacks.loadWatchlist);
   app.post('/search', movieDbCallbacks.searchDb);
+  app.get('/watchlist/:id', movieDbCallbacks.addToWatchlist);
+  app.get('/watchlist/remove/:id', movieDbCallbacks.removeFromWatchlist);
+
 
 
 

@@ -18,29 +18,29 @@ module.exports = (db) => {
     const imgUrl = "https://image.tmdb.org/t/p/w500"
     let response = await axios.get(nowPlayingUrl);
 
-      // handle success
-      let dataOut = await response.data;
-      let results = await response.data.results;
-      // console.log(dataOut)
-      results.forEach(element => {
-        var posterPath = element.poster_path
-        element.poster_path = imgUrl + posterPath;
-        var backdrop_path = element.backdrop_path
-        element.backdrop_path = imgUrl + backdrop_path;
-        //   let response = await movieTrailer( element.title, element.release_date.substring(0,3))
-        //   trailer = await response;
-        // //  console.log(trailer);
-        //  element.trailer = await trailer;
-      })
-      // always executed
-      dataOut.results = await results;
-      dataOut.loggedIn = loggedIn;
-      dataOut.username = username;
-      dataOut.userid = userid;
+    // handle success
+    let dataOut = await response.data;
+    let results = await response.data.results;
+    // console.log(dataOut)
+    results.forEach(element => {
+      var posterPath = element.poster_path
+      element.poster_path = imgUrl + posterPath;
+      var backdrop_path = element.backdrop_path
+      element.backdrop_path = imgUrl + backdrop_path;
+      //   let response = await movieTrailer( element.title, element.release_date.substring(0,3))
+      //   trailer = await response;
+      // //  console.log(trailer);
+      //  element.trailer = await trailer;
+    })
+    // always executed
+    dataOut.results = await results;
+    dataOut.loggedIn = loggedIn;
+    dataOut.username = username;
+    dataOut.userid = userid;
 
-      // console.log(results);
-      res.render('./moviedb/index', dataOut)
-    
+    // console.log(results);
+    res.render('./moviedb/index', dataOut)
+
   }
 
   let getMovie = async (req, res) => {
@@ -52,21 +52,21 @@ module.exports = (db) => {
     const imgUrl = "https://image.tmdb.org/t/p/w500"
     let singleMovie;
     var reviews;
-    dataIn = {"movieid": movie_id}
-    db.moviedb.getReviews(dataIn,(error, result) => {
+    dataIn = { "movieid": movie_id }
+    db.moviedb.getReviews(dataIn, (error, result) => {
       reviews = result;
     });
-      try{
-        let response = await axios.get(singleMovieUrl);
-        singleMovie = await response.data;
-        // console.log(singleMovie)
+    try {
+      let response = await axios.get(singleMovieUrl);
+      singleMovie = await response.data;
+      // console.log(singleMovie)
       var posterPath = singleMovie.poster_path
       singleMovie.poster_path = imgUrl + posterPath;
       var backdrop_path = singleMovie.backdrop_path
       singleMovie.backdrop_path = imgUrl + backdrop_path;
-      let trailer = await movieTrailer( singleMovie.title, singleMovie.release_date.substring(0,3))
+      let trailer = await movieTrailer(singleMovie.title, singleMovie.release_date.substring(0, 3))
       // //  console.log(trailer);
-      
+
       // console.log(trailer)
       trailer = trailer.split('https://www.youtube.com/watch?v=');
       // console.log(trailer[1])
@@ -76,13 +76,13 @@ module.exports = (db) => {
       singleMovie.userid = userid;
       singleMovie.trailer = trailer[1];
       singleMovie.reviews = reviews;
-      }
-      catch(error){
+    }
+    catch (error) {
 
-      }
-      console.log(singleMovie);
-      
-      res.render('moviedb/movie', singleMovie)    
+    }
+    console.log(singleMovie);
+
+    res.render('moviedb/movie', singleMovie)
   }
 
   let login = (request, response) => {
@@ -105,7 +105,7 @@ module.exports = (db) => {
     }
     else {
       db.moviedb.signup(dataIn, (error, result) => {
-        if (typeof(result) === 'string') {
+        if (typeof (result) === 'string') {
           var error = {
             error: result
           }
@@ -133,7 +133,7 @@ module.exports = (db) => {
     }
     else {
       db.moviedb.login(dataIn, (error, result) => {
-        if (typeof(result) === 'string') {
+        if (typeof (result) === 'string') {
           var error = {
             error: result
           }
@@ -178,19 +178,32 @@ module.exports = (db) => {
       response.redirect(`/movies/${dataIn.movieid}`);
     });
   };
-  
+
   let loadWatchlist = async (req, res) => {
     var loggedIn = req.cookies['loggedIn'];
     var username = req.cookies['username'];
     var userid = req.cookies['userid'];
 
-   if (loggedIn==""){
-     res.redirect('/');
-   } else{
-    res.render('./moviedb/watchlist', {loggedIn: loggedIn,username: username,userid:userid})
+    if (loggedIn == "") {
+      res.redirect('/');
+    } else {
+      var getResult;
+      dataIn = {
+        'userid': userid,
+      }
+      db.moviedb.getWatchlist(dataIn, (error, result) => {
+        getResult = {
+          loggedIn: loggedIn,
+          userid: userid,
+          username: username,
+          result: result
+        };
+        res.render('./moviedb/watchlist', getResult)
 
-   }
-    
+      });
+
+    }
+
   }
   let searchDb = async (req, res) => {
     var loggedIn = req.cookies['loggedIn'];
@@ -201,37 +214,101 @@ module.exports = (db) => {
     const imgUrl = "https://image.tmdb.org/t/p/w500"
     let response = await axios.get(searchUrl);
 
-      // handle success
-      let dataOut = await response.data;
-      let results = await response.data.results;
-      // console.log(dataOut)
-      results.forEach(element => {
-        var posterPath = element.poster_path
-        element.poster_path = imgUrl + posterPath;
-        var backdrop_path = element.backdrop_path
-        element.backdrop_path = imgUrl + backdrop_path;
-        //   let response = await movieTrailer( element.title, element.release_date.substring(0,3))
-        //   trailer = await response;
-        // //  console.log(trailer);
-        //  element.trailer = await trailer;
-      })
-      // always executed
-      dataOut.results = await results;
-      dataOut.loggedIn = loggedIn;
-      dataOut.username = username;
-      dataOut.userid = userid;
-      dataOut.query = query;
-      console.log(dataOut)
+    // handle success
+    let dataOut = await response.data;
+    let results = await response.data.results;
+    // console.log(dataOut)
+    results.forEach(element => {
+      var posterPath = element.poster_path
+      element.poster_path = imgUrl + posterPath;
+      var backdrop_path = element.backdrop_path
+      element.backdrop_path = imgUrl + backdrop_path;
+      //   let response = await movieTrailer( element.title, element.release_date.substring(0,3))
+      //   trailer = await response;
+      // //  console.log(trailer);
+      //  element.trailer = await trailer;
+    })
+    // always executed
+    dataOut.results = await results;
+    dataOut.loggedIn = loggedIn;
+    dataOut.username = username;
+    dataOut.userid = userid;
+    dataOut.query = query;
+    console.log(dataOut)
 
-      // console.log(results);
-      res.render('./moviedb/search', dataOut)
-    
+    // console.log(results);
+    res.render('./moviedb/search', dataOut)
+  }
+  let addToWatchlist = async (req, res) => {
+    var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
+    let movie_id = req.params.id;
+    var singleMovieUrl = `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${api_key}&language=en-US`;
+    const imgUrl = "https://image.tmdb.org/t/p/w500"
+    let singleMovie;
+    var reviews;
+    try {
+      let response = await axios.get(singleMovieUrl);
+      singleMovie = await response.data;
+      // console.log(singleMovie)
+      var posterPath = singleMovie.poster_path
+      singleMovie.poster_path = imgUrl + posterPath;
+      var backdrop_path = singleMovie.backdrop_path
+      singleMovie.backdrop_path = imgUrl + backdrop_path;
+      let trailer = await movieTrailer(singleMovie.title, singleMovie.release_date.substring(0, 3))
+      // //  console.log(trailer);
+
+      // console.log(trailer)
+      trailer = trailer.split('https://www.youtube.com/watch?v=');
+      // console.log(trailer[1])
+
+      singleMovie.loggedIn = loggedIn;
+      singleMovie.username = username;
+      singleMovie.userid = userid;
+      singleMovie.trailer = trailer[1];
+      singleMovie.reviews = reviews;
+
+      dataIn = {
+        'movieid': movie_id,
+        'userid': userid,
+        'title': singleMovie.title,
+        'poster': singleMovie.poster_path,
+        'plot': singleMovie.overview
+      }
+      db.moviedb.addToWatchlist(dataIn, (error, result) => {
+        var watchlistid = result;
+      });
+
+    }
+    catch (error) {
+
+    }
+    // console.log(singleMovie);
+
+    res.redirect('/watchlist')
   }
 
-  
-
-
+let removeFromWatchlist = async (req, res) => {
+    var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
+    let movie_id = req.params.id;
  
+      dataIn = {
+        'movieid': movie_id,
+        'userid': userid,
+        
+      }
+      db.moviedb.removeFromWatchlist(dataIn, (error, result) => {
+      });
+
+    // console.log(singleMovie);
+
+    res.redirect('/watchlist')
+  }
+
+
   /**
    * ===========================================
    * Export controller functions as a module
@@ -247,5 +324,8 @@ module.exports = (db) => {
     logout: logout,
     postReview: postReview,
     loadWatchlist: loadWatchlist,
-    searchDb: searchDb};
+    searchDb: searchDb,
+    addToWatchlist: addToWatchlist,
+    removeFromWatchlist: removeFromWatchlist
+  };
 }

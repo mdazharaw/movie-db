@@ -13,7 +13,7 @@ class Home extends React.Component {
       // console.log(element.title)
       // console.log(element.poster_path)
 
-      return <li className="row pb-5">
+      return <li className="row pt-3 pb-3 border-secondary border-bottom">
 
         <div className="col-5">
           <img className="w-75 text-center" src={element.poster_path} alt="" />

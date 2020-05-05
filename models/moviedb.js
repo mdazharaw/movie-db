@@ -152,11 +152,102 @@ module.exports = (dbPoolInstance) => {
       }
     });
   }
-  
+
+  let addToWatchlist = (dataIn, callback) => {
+    var userid = dataIn.userid;
+    var movieid = dataIn.movieid;
+    var title = dataIn.title;
+    var poster = dataIn.poster;
+    var plot = dataIn.plot;
+    // console.log(Array.isArray(tags));
+    
+      let query = 'INSERT INTO watchlist (userid, movieid, title, poster, plot ) VALUES ($1,$2, $3, $4, $5) RETURNING watchlistid';
+      const values = [userid, movieid, title, poster, plot];
+      dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error) {
+
+          // invoke callback function with results after query has executed
+          callback(error, null);
+
+        } else {
+
+          // invoke callback function with results after query has executed
+          if (queryResult.rows.length > 0) {
+              callback(null, queryResult.rows);
+            
+            // console.log(queryResult.rows);
+
+          } else {
+            callback(null, null);
+
+          }
+        }
+      });    
+  };
+
+  let getWatchlist = (dataIn, callback) => {
+    var userid = dataIn.userid;
+    
+    // console.log(Array.isArray(tags));
+    
+      let query = 'SELECT * FROM watchlist WHERE userid = $1'
+      const values = [userid];
+      dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error) {
+
+          // invoke callback function with results after query has executed
+          callback(error, null);
+
+        } else {
+
+          // invoke callback function with results after query has executed
+          if (queryResult.rows.length > 0) {
+              callback(null, queryResult.rows);
+            
+            // console.log(queryResult.rows);
+
+          } else {
+            callback(null, null);
+
+          }
+        }
+      });    
+  };
+  let removeFromWatchlist = (dataIn, callback) => {
+    var userid = dataIn.userid;
+    var movieid = dataIn.movieid;
+    // console.log(Array.isArray(tags));
+    
+      let query = 'DELETE FROM watchlist WHERE userid = $1 AND movieid = $2'
+      const values = [userid, movieid];
+      dbPoolInstance.query(query, values, (error, queryResult) => {
+        if (error) {
+
+          // invoke callback function with results after query has executed
+          callback(error, null);
+
+        } else {
+
+          // invoke callback function with results after query has executed
+          if (queryResult.rows.length > 0) {
+              callback(null, queryResult.rows);
+            
+            // console.log(queryResult.rows);
+
+          } else {
+            callback(null, null);
+
+          }
+        }
+      });    
+  };
   return {
     signup,
     login,
     postReview,
-    getReviews
+    getReviews,
+    addToWatchlist,
+    getWatchlist,
+    removeFromWatchlist
   };
 };
