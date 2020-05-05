@@ -1,6 +1,7 @@
 ### Approach and Process
 __What in my process and approach to this project would I do differently next time?__
 * I spent too much time on just recapping and watching tutorial videos rather than doing actual work on the project. Will keep that timing in check for future projects.
+
 __What in my process and approach to this project went well that I would repeat next time?__
 * Pre Project exercise helped in visualisation, will do more extensive ERD and wireframing in future for better planning
 --------------------------------------------------------------------------------------------------
