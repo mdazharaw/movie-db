@@ -8,31 +8,7 @@ class Watchlist extends React.Component {
     var logoStyle = {
       fontFamily: 'Krona One, sans-serif'
     }
-    var watchlist = this.props.result;
-    if (watchlist == null ||watchlist ==undefined){
-      watchlist = <li className="row pt-3 pb-3 border-secondary border-bottom">
-      <h4 className="text-light pl-3">There are no movies in your watchlist.</h4>
-    </li>
-    }else{
-    watchlist = watchlist.map((element) => {
-      // console.log(element.title)
-      // console.log(element.poster_path)
-
-      return <li className="row pt-3 pb-3 border-secondary border-bottom">
-
-        <div className="col-5">
-          <img className="w-75 text-center" src={element.poster} alt="" />
-        </div>
-        <div className="col-8">
-          <a href={`/movies/${element.movieid}`}><h2 className="text-light">{element.title}</h2>
-          </a>
-          <p className="text-light">{element.plot}</p>
-          <a className={`mt-3 btn btn-danger`} href={`/watchlist/remove/${element.movieid}`} >Remove from watchlist</a>
-        </div>
-
-      </li>
-    })
-  }
+    
     var showLogin = 'd-inline';
     var showLogout = 'd-none';
     // console.log(this.props.result);
@@ -53,7 +29,7 @@ class Watchlist extends React.Component {
     return (
       <html>
         <head>
-        <title>Watcher: My Watchlist</title>
+        <title>Watcher: Add New List</title>
 
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
           <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet" />
@@ -89,9 +65,13 @@ class Watchlist extends React.Component {
           <form method="POST" action={'/search'}>
           <input type="text" className="form-control  ml-auto mr-auto mb-5" id="exampleFormControlInput1" placeholder="Search by movie title..."name="searchTerm"/>
           </form >
-            <h3 className="text-light font-weight-light font-italic" style={logoStyle}>My Watchlist</h3>
+            <h3 className="text-light font-weight-light font-italic" style={logoStyle}>Add New Community List</h3>
             <br />
-            {watchlist}
+            <form className="d-flex flex-column w-75 ml-auto mr-auto" method="POST" action='/community/new'>
+              <input className="mt-3 pl-2 pt-2 pb-2" type="text" name="listname" placeholder="Enter List Name" />
+              <input className="mt-3 pl-2 pt-2 pb-2" type="text" name="description" placeholder="Enter List Description" />
+              <input className="btn btn-primary rounded-pill mt-3 mb-3 pt-2 pb-2" type="submit" value="Submit" />
+          </form>
           </div>
           <footer className="page-footer font-small">
 

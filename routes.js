@@ -27,10 +27,9 @@ module.exports = (app, allModels) => {
   app.post('/search', movieDbCallbacks.searchDb);
   app.get('/watchlist/:id', movieDbCallbacks.addToWatchlist);
   app.get('/watchlist/remove/:id', movieDbCallbacks.removeFromWatchlist);
-
-
-
-
+  app.get('/community', movieDbCallbacks.loadCommunity);
+  app.get('/community/new', movieDbCallbacks.createNewCommList);
+  app.post('/community/new', movieDbCallbacks.addNewCommList);
 
 
 };

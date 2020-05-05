@@ -3,31 +3,28 @@ const cookieParser = require('cookie-parser');
 const sha256 = require('js-sha256');
 const movieTrailer = require('movie-trailer')
 
-class Watchlist extends React.Component {
+class Commlist extends React.Component {
   render() {
     var logoStyle = {
       fontFamily: 'Krona One, sans-serif'
     }
-    var watchlist = this.props.result;
-    if (watchlist == null ||watchlist ==undefined){
-      watchlist = <li className="row pt-3 pb-3 border-secondary border-bottom">
-      <h4 className="text-light pl-3">There are no movies in your watchlist.</h4>
+    var commlist = this.props.result;
+    if (commlist == null ||commlist ==undefined){
+      commlist = <li className="row pt-3 pb-3 border-secondary border-bottom">
+      <h4 className="text-light pl-3">There are no community lists available.</h4>
     </li>
     }else{
-    watchlist = watchlist.map((element) => {
+      commlist = commlist.map((element) => {
       // console.log(element.title)
       // console.log(element.poster_path)
 
       return <li className="row pt-3 pb-3 border-secondary border-bottom">
 
-        <div className="col-5">
-          <img className="w-75 text-center" src={element.poster} alt="" />
-        </div>
         <div className="col-8">
-          <a href={`/movies/${element.movieid}`}><h2 className="text-light">{element.title}</h2>
+          <a href="/"><h2 className="text-light">{element.listname}</h2>
           </a>
-          <p className="text-light">{element.plot}</p>
-          <a className={`mt-3 btn btn-danger`} href={`/watchlist/remove/${element.movieid}`} >Remove from watchlist</a>
+          <p className="text-light">{element.listdescription}</p>
+          {/* <a className={`mt-3 btn btn-danger`} href={`/watchlist/remove/${element.movieid}`} >Remove from watchlist</a> */}
         </div>
 
       </li>
@@ -53,7 +50,7 @@ class Watchlist extends React.Component {
     return (
       <html>
         <head>
-        <title>Watcher: My Watchlist</title>
+        <title>Watcher: Community Lists</title>
 
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
           <link href="https://fonts.googleapis.com/css2?family=Krona+One&display=swap" rel="stylesheet" />
@@ -89,9 +86,10 @@ class Watchlist extends React.Component {
           <form method="POST" action={'/search'}>
           <input type="text" className="form-control  ml-auto mr-auto mb-5" id="exampleFormControlInput1" placeholder="Search by movie title..."name="searchTerm"/>
           </form >
-            <h3 className="text-light font-weight-light font-italic" style={logoStyle}>My Watchlist</h3>
+            <h3 className="text-light font-weight-light font-italic" style={logoStyle}>Community Lists</h3>
             <br />
-            {watchlist}
+            {commlist}
+            <a className={`mt-5 btn btn-light ${showLogout}`} href={`/community/new`}  >Create new community list</a>
           </div>
           <footer className="page-footer font-small">
 
@@ -111,4 +109,4 @@ class Watchlist extends React.Component {
   }
 }
 
-module.exports = Watchlist;
+module.exports = Commlist;

@@ -22,14 +22,19 @@ poster TEXT,
 plot TEXT
 );
 
-CREATE TABLE IF NOT EXISTS commlist(
-commlistid SERIAL PRIMARY KEY,
-userid INTEGER,
+CREATE TABLE IF NOT EXISTS commlistdata(
+commlistid INTEGER,
 movieid INTEGER,
 title TEXT,
 poster TEXT,
-plot TEXT,
-listname TEXT
+plot TEXT
+);
+
+CREATE TABLE IF NOT EXISTS commlistdetail(
+commlistid SERIAL PRIMARY KEY,
+creatorid INTEGER,
+listname TEXT,
+listDescription TEXT
 );
 
 

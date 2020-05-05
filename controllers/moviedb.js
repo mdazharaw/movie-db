@@ -289,24 +289,73 @@ module.exports = (db) => {
     res.redirect('/watchlist')
   }
 
-let removeFromWatchlist = async (req, res) => {
+  let removeFromWatchlist = async (req, res) => {
     var loggedIn = req.cookies['loggedIn'];
     var username = req.cookies['username'];
     var userid = req.cookies['userid'];
     let movie_id = req.params.id;
- 
-      dataIn = {
-        'movieid': movie_id,
-        'userid': userid,
-        
-      }
-      db.moviedb.removeFromWatchlist(dataIn, (error, result) => {
-      });
+
+    dataIn = {
+      'movieid': movie_id,
+      'userid': userid,
+
+    }
+    db.moviedb.removeFromWatchlist(dataIn, (error, result) => {
+    });
 
     // console.log(singleMovie);
 
     res.redirect('/watchlist')
   }
+  let loadCommunity = async (req, res) => {
+    var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
+
+
+    db.moviedb.getCommList((error, result) => {
+    getResult = {
+      loggedIn: loggedIn,
+      userid: userid,
+      username: username,
+      result: result
+    };
+    console.log(result)
+    res.render('./moviedb/community', getResult)
+
+    });
+  }
+
+  let createNewCommList = async (req, res) => {
+    var loggedIn = req.cookies['loggedIn'];
+    var username = req.cookies['username'];
+    var userid = req.cookies['userid'];
+
+    if (loggedIn == "") {
+      res.redirect('/');
+    } else {
+
+      getResult = {
+        loggedIn: loggedIn,
+        userid: userid,
+        username: username,
+      }
+      res.render('./moviedb/community-new', getResult)
+    }
+  }
+
+  let addNewCommList = (request, response) => {
+    var loggedIn = request.cookies['loggedIn'];
+    var username = request.cookies['username'];
+    var userid = request.cookies['userid'];
+    var dataIn = request.body;
+    dataIn.userid = userid;
+
+    db.moviedb.createNewCommList(dataIn, (error, result) => {
+
+    });
+    response.redirect('/community')
+  };
 
 
   /**
@@ -326,6 +375,9 @@ let removeFromWatchlist = async (req, res) => {
     loadWatchlist: loadWatchlist,
     searchDb: searchDb,
     addToWatchlist: addToWatchlist,
-    removeFromWatchlist: removeFromWatchlist
+    removeFromWatchlist: removeFromWatchlist,
+    loadCommunity: loadCommunity,
+    createNewCommList: createNewCommList,
+    addNewCommList: addNewCommList
   };
 }
