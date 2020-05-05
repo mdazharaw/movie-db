@@ -11,6 +11,10 @@ __What in my code and program design in the project would I do differently next 
 * MVC was used but was not appropriately segmented into different files for each function. Will lean towards the best practice in future.
 * Severe lack of commenting, possibly due to the repeated adding and removing of code to see what fits.
 * Did not commit repo as often as should have and failed to use git branching practice
+* Improper naming conventions, will try to be more consistent in future
+
+__What in my process and approach to this project went well that I would repeat next time?__
+* Once I gain more experience on properly using async and await, will definitely use it more often next time.
 
 ### WDI Unit 2 Post Mortem
 
